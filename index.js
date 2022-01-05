@@ -1,4 +1,5 @@
 const express = require("express");
+const debug = require("Debug")("GoodPoints:main");
 const app = express();
 const port = process.env.PORT || 3003;
 
@@ -7,5 +8,5 @@ app.get("/", (request, respone) => {
 });
 
 app.listen(port, () => {
-  console.log("Listening on port: ", port);
+  debug("Listening on port:", port);
 });
