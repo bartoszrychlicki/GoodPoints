@@ -15,7 +15,7 @@ const schema = {
   },
 };
 
-const object = new mongoose.model('Categories', schema);
+const object = new mongoose.model('Category', schema);
 
 function validate(object) {
   const schema = Joi.object({
