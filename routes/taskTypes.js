@@ -3,33 +3,46 @@ const express = require('express');
 //const admin = require('../middleware/admin');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Category, validate } = require('../models/category');
+const { Category } = require('../models/category');
+const { User } = require('../models/user');
+const { TaskType, validate } = require('../models/taskType');
 
 router.get('/', async (req, res) => {
-  const category = await Category.find();
-  res.send(category);
+  const taskType = await TaskType.find();
+  res.send(taskType);
 });
 
 router.get('/:id', async (req, res) => {
-  const category = await Category.findById(req.params.id).populate(
+  const taskType = await TaskType.findById(req.params.id).populate(
     'user',
     '-password'
   );
-  if (!category) {
-    return res.status(404).send('The genre with the given ID was not found.');
+  if (!taskType) {
+    return res
+      .status(404)
+      .send('The taskType with the given ID was not found.');
   }
 
-  res.send(category);
+  res.send(taskType);
 });
 
 router.post('/', async function (req, res) {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const category = new Category(req.body);
-  await category.save();
+  const category = await Category.findById(req.body.category).exec();
+  if (!category) {
+    return res.status(400).send('Category with given ID not found');
+  }
 
-  res.send(category);
+  console.log(category);
+
+  const taskType = new TaskType(req.body);
+  taskType.category = category;
+
+  await taskType.save();
+
+  res.send(taskType);
 });
 
 router.put('/:id', async (req, res) => {

@@ -27,3 +27,4 @@ function validate(object) {
 
 module.exports.Category = object;
 module.exports.validate = validate;
+module.exports.categorySchema = schema;
