@@ -3,33 +3,43 @@ const express = require('express');
 //const admin = require('../middleware/admin');
 const router = express.Router();
 const mongoose = require('mongoose');
-const { Category, validate } = require('../models/category');
+
+const { TaskType } = require('../models/taskType');
+const { ActivityType, validate } = require('../models/activityType');
 
 router.get('/', async (req, res) => {
-  const category = await Category.find();
-  res.send(category);
+  const object = await ActivityType.find();
+  res.send(object);
 });
 
 router.get('/:id', async (req, res) => {
-  const category = await Category.findById(req.params.id).populate(
-    'user',
-    '-password'
+  const object = await ActivityType.findById(req.params.id).populate(
+    'TaskType'
   );
-  if (!category) {
-    return res.status(404).send('The genre with the given ID was not found.');
+  if (!object) {
+    return res
+      .status(404)
+      .send('The activityType with the given ID was not found.');
   }
 
-  res.send(category);
+  res.send(object);
 });
 
 router.post('/', async function (req, res) {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const category = new Category(req.body);
-  await category.save();
+  const taskType = await TaskType.findById(req.body.tasktype).exec();
+  if (!taskType) {
+    return res.status(400).send('TaskType with given ID not found');
+  }
 
-  res.send(category);
+  const activityType = new ActivityType(req.body);
+  activityType.taskType = taskType;
+
+  await activityType.save();
+
+  res.send(activityType);
 });
 
 router.put('/:id', async (req, res) => {
@@ -37,7 +47,7 @@ router.put('/:id', async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
-    const result = await Category.findByIdAndUpdate(
+    const result = await ActivityType.findByIdAndUpdate(
       req.params.id,
       {
         $set: req.body,
@@ -47,7 +57,7 @@ router.put('/:id', async (req, res) => {
     if (!result)
       return res
         .status(404)
-        .send('The category with the given ID was not found.');
+        .send('The activitytype with the given ID was not found.');
     res.send(result);
   } catch (err) {
     console.log('Error ', err);
@@ -59,13 +69,15 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-  const cat = await Cateogry.findByIdAndRemove(req.params.id);
+  const activityType = await ActivityType.findByIdAndRemove(req.params.id);
 
-  if (!cat) {
-    return res.status(404).send('The genre with the given ID was not found.');
+  if (!activityType) {
+    return res
+      .status(404)
+      .send('The ActivityType with the given ID was not found.');
   }
 
-  res.send(cat);
+  res.send(activityType);
 });
 
 module.exports = router;
