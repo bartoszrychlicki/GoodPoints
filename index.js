@@ -22,10 +22,11 @@ winston.configure({
 });
 
 const port = process.env.PORT || 3003;
+require('./startup/config')();
 
+require('./startup/prod')(app);
 require('./startup/db')();
 require('./startup/routes')(app);
-require('./startup/prod')(app);
 
 app.listen(port, () => {
   winston.info('Listening on port:', port);
