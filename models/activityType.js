@@ -27,3 +27,4 @@ function validate(object) {
 
 module.exports.ActivityType = object;
 module.exports.validate = validate;
+module.exports.ActivityTypeSchema = schema;
