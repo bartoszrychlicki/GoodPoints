@@ -1,3 +1,4 @@
 {
-  "db": "goodpoints_db"
+  "db": "goodpoints_db",
+  "jwtPrivateKey": "jwtPrivateKey"
 }
