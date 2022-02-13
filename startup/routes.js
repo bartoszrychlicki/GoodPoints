@@ -11,6 +11,7 @@ const categories = require('../routes/categories')
 const taskTypes = require('../routes/taskTypes')
 const activityTypes = require('../routes/activityTypes')
 const activities = require('../routes/activities')
+const auth = require('../routes/auth')
 
 // adding all the routes
 module.exports = function (app) {
@@ -22,6 +23,7 @@ module.exports = function (app) {
   app.use('/api/taskTypes', taskTypes)
   app.use('/api/activityTypes', activityTypes)
   app.use('/api/activities', activities)
+  app.use('/api/auth', auth)
 
   // error handling in middleware function
   app.use(error)
