@@ -7,7 +7,7 @@ const express = require('express')
 const router = express.Router()
 
 const jwt = require('jsonwebtoken')
-const req = require('express/lib/request')
+
 //const config = require('config');
 //const auth = require('../middleware/auth');
 
@@ -17,12 +17,14 @@ router.post('/', async function (req, res) {
 
   let user = await User.findOne({ email: req.body.email })
   if (!user) return res.status(400).send('Invalid email or password')
-  const validPassword = await bcrypt.compare(req.body.password, user.password)
-  if (!validPassword) {
-    return res.status(400).send('Invalid email or password')
-  }
 
-  res.send(true)
+  const validPassword = await bcrypt.compare(req.body.password, user.password)
+  if (!validPassword) return res.status(400).send('Invalid email or password')
+
+  const token = user.generateAuthToken()
+
+  //returning token in header and user object as a response
+  res.header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email']))
 })
 
 function validate(request) {
