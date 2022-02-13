@@ -1,15 +1,14 @@
-const express = require('express');
-require('express-async-errors');
+const express = require('express')
+require('express-async-errors')
 
-const req = require('express/lib/request');
-const app = express();
-const winston = require('winston');
+const app = express()
+const winston = require('winston')
 
-winston.remove(winston.transports.Console);
+//winston.remove(winston.transports.Console);
 winston.configure({
   transports: [
     new winston.transports.File({
-      filename: './logfile.log',
+      filename: 'logfile.log',
       handleExceptions: true,
       humanReadableUnhandledException: true,
     }),
@@ -19,15 +18,15 @@ winston.configure({
       humanReadableUnhandledException: true,
     }),
   ],
-});
+})
 
-const port = process.env.PORT || 3003;
-require('./startup/config')();
+const port = process.env.PORT || 3003
+require('./startup/config')()
 
-require('./startup/prod')(app);
-require('./startup/db')();
-require('./startup/routes')(app);
+require('./startup/prod')(app)
+require('./startup/db')()
+require('./startup/routes')(app)
 
 app.listen(port, () => {
-  winston.info('Listening on port:', port);
-});
+  winston.info('Listening on port:', port)
+})
