@@ -1,3 +1,4 @@
+const Joi = require('Joi')
 const bcrypt = require('bcrypt')
 const _ = require('lodash')
 const { User } = require('../models/user')
@@ -6,6 +7,7 @@ const express = require('express')
 const router = express.Router()
 
 const jwt = require('jsonwebtoken')
+const req = require('express/lib/request')
 //const config = require('config');
 //const auth = require('../middleware/auth');
 
