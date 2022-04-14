@@ -2,6 +2,8 @@ const express = require('express')
 require('express-async-errors')
 
 const app = express()
+var cors = require('cors')
+
 const winston = require('winston')
 
 //winston.remove(winston.transports.Console);
@@ -22,7 +24,6 @@ winston.configure({
 
 const port = process.env.PORT || 3003
 require('./startup/config')()
-
 require('./startup/prod')(app)
 require('./startup/db')()
 require('./startup/routes')(app)
