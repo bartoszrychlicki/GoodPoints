@@ -1,3 +1,4 @@
+const auth = require('../middleware/auth')
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
@@ -8,14 +9,9 @@ const jwt = require('jsonwebtoken')
 //const config = require('config');
 //nconst auth = require('../middleware/auth');
 
-router.get('/me', async function (req, res) {
+router.get('/me', auth, async function (req, res) {
   const user = await User.findById(req.user._id).select('-password')
   res.send(user)
-})
-
-router.get('/', async function (req, res) {
-  const users = await User.find().sort('id')
-  return res.send(users)
 })
 
 router.post('/', async function (req, res) {
