@@ -48,7 +48,7 @@ router.put('/:id', async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message)
 
   try {
-    const result = await Category.findByIdAndUpdate(
+    const result = await TaskType.findByIdAndUpdate(
       req.params.id,
       {
         $set: req.body,
@@ -70,13 +70,13 @@ router.put('/:id', async (req, res) => {
 })
 
 router.delete('/:id', async (req, res) => {
-  const cateogry = await Category.findByIdAndRemove(req.params.id)
+  const task = await TaskType.findByIdAndRemove(req.params.id)
 
-  if (!cateogry) {
+  if (!task) {
     return res.status(404).send('The genre with the given ID was not found.')
   }
 
-  res.send(cateogry)
+  res.send(task)
 })
 
 module.exports = router
