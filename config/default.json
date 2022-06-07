@@ -1,4 +1,0 @@
-{
-  "db": "mongodb+srv://kanchan:Kj173742@cluster0.dcnlc.mongodb.net/goodpoints?retryWrites=true&w=majority",
-  "jwtPrivateKey": "12345"
-}
