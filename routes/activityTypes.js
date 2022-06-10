@@ -35,7 +35,7 @@ router.post('/', async function (req, res) {
   }
 
   const activityType = new ActivityType(req.body);
-  activityType.taskType = taskType;
+  activityType.tasktype = taskType;
 
   await activityType.save();
 

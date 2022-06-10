@@ -8,7 +8,16 @@ const { User } = require('../models/user')
 const { TaskType, validate } = require('../models/taskType')
 
 router.get('/', async (req, res) => {
-  const taskType = await TaskType.find()
+  // const taskType = await TaskType.find()
+
+  const taskType = await TaskType.aggregate([{
+    $lookup: {
+      from: 'activitytypes',
+      localField: "_id",
+      foreignField: "tasktype",
+      as: "activitytypes"
+    }
+  }]);
   res.send(taskType)
 })
 
