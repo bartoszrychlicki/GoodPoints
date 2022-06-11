@@ -10,14 +10,16 @@ const { TaskType, validate } = require('../models/taskType')
 router.get('/', async (req, res) => {
   // const taskType = await TaskType.find()
 
-  const taskType = await TaskType.aggregate([{
-    $lookup: {
-      from: 'activitytypes',
-      localField: "_id",
-      foreignField: "tasktype",
-      as: "activitytypes"
-    }
-  }]);
+  const taskType = await TaskType.aggregate([
+    {
+      $lookup: {
+        from: 'activitytypes',
+        localField: '_id',
+        foreignField: 'tasktype',
+        as: 'activitytypes',
+      },
+    },
+  ])
   res.send(taskType)
 })
 
@@ -42,7 +44,7 @@ router.post('/', async function (req, res) {
     return res.status(400).send('Category with given ID not found')
   }
 
-  console.log(category)
+  //console.log(category)
 
   const taskType = new TaskType(req.body)
   taskType.category = category
@@ -58,7 +60,9 @@ router.put('/:id', async (req, res) => {
 
   const taskType = await TaskType.findById(req.params.id)
   if (!taskType) {
-    return res.status(404).send('The task type with the given ID was not found.')
+    return res
+      .status(404)
+      .send('The task type with the given ID was not found.')
   }
   // if (taskType.user != req.body.user) {
   //   return res.status(401).send('Trying to get task type for different user.')
