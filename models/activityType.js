@@ -6,7 +6,7 @@ const { TaskType } = require('./taskType')
 
 const schema = {
   reward: { type: Number, required: true, min: 0, max: 100 },
-  tasktype: {
+  taskType: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'TaskType',
     required: true,

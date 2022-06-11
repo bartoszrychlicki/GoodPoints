@@ -1,9 +1,10 @@
-const Joi = require('joi');
-Joi.objectId = require('joi-objectid')(Joi);
+const Joi = require('joi')
+Joi.objectId = require('joi-objectid')(Joi)
 
-const mongoose = require('mongoose');
-const User = require('./user');
-const { Category, categorySchema } = require('./category');
+const mongoose = require('mongoose')
+const User = require('./user')
+const { Category, categorySchema } = require('./category')
+const { ActivityType } = require('./activityType')
 
 const schema = {
   name: { type: String, required: true },
@@ -18,18 +19,21 @@ const schema = {
       required: true,
     },
   }),
-};
+  activityTypes: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'activityType' },
+  ],
+}
 
-const object = new mongoose.model('taskType', schema);
+const object = new mongoose.model('taskType', schema)
 
 function validate(object) {
   const schema = Joi.object({
     name: Joi.string().min(3).max(100).required(),
     user: Joi.objectId().required(),
     category: Joi.objectId().required(),
-  });
-  return schema.validate(object);
+  })
+  return schema.validate(object)
 }
 
-module.exports.TaskType = object;
-module.exports.validate = validate;
+module.exports.TaskType = object
+module.exports.validate = validate

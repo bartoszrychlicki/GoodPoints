@@ -8,21 +8,12 @@ const { User } = require('../models/user')
 const { TaskType, validate } = require('../models/taskType')
 
 router.get('/', auth, async (req, res) => {
-  // const taskType = await TaskType.find()
-
-  const taskType = await TaskType.aggregate([
-    {
-      $lookup: {
-        from: 'activitytypes',
-        localField: '_id',
-        foreignField: 'tasktype',
-        as: 'activitytypes',
-      },
-      $match: {
-        user_id: req.user_id,
-      },
-    },
-  ])
+  // fetching only records just for logged user
+  const taskType = await TaskType.find({
+    user: req.user._id,
+  })
+    .populate('activityTypes')
+    .exec()
   res.send(taskType)
 })
 
