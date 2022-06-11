@@ -8,7 +8,7 @@ const schema = {
   reward: { type: Number, required: true, min: 0, max: 100 },
   taskType: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'TaskType',
+    ref: 'taskType',
     required: true,
   },
   description: { type: String, required: true },

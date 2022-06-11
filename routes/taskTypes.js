@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const { Category } = require('../models/category')
 const { User } = require('../models/user')
 const { TaskType, validate } = require('../models/taskType')
+const { ActivityType } = require('../models/activityType')
 
 router.get('/', auth, async (req, res) => {
   // fetching only records just for logged user

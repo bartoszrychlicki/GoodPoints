@@ -10,7 +10,7 @@ const { ActivityType, validate } = require('../models/activityType')
 const winston = require('winston')
 
 router.get('/', auth, async (req, res) => {
-  const object = await ActivityType.find()
+  const object = await ActivityType.find().populate('taskType')
   res.send(object)
 })
 
