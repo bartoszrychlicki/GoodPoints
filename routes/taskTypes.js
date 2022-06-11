@@ -1,5 +1,5 @@
 const express = require('express')
-//const auth = require('../middleware/auth');
+const auth = require('../middleware/auth')
 //const admin = require('../middleware/admin');
 const router = express.Router()
 const mongoose = require('mongoose')
@@ -7,7 +7,7 @@ const { Category } = require('../models/category')
 const { User } = require('../models/user')
 const { TaskType, validate } = require('../models/taskType')
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   // const taskType = await TaskType.find()
 
   const taskType = await TaskType.aggregate([
@@ -18,12 +18,15 @@ router.get('/', async (req, res) => {
         foreignField: 'tasktype',
         as: 'activitytypes',
       },
+      $match: {
+        user_id: req.user_id,
+      },
     },
   ])
   res.send(taskType)
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
   const taskType = await TaskType.findById(req.params.id).populate(
     'user',
     '-password'
@@ -35,7 +38,7 @@ router.get('/:id', async (req, res) => {
   res.send(taskType)
 })
 
-router.post('/', async function (req, res) {
+router.post('/', auth, async function (req, res) {
   const { error } = validate(req.body)
   if (error) return res.status(400).send(error.details[0].message)
 
@@ -49,12 +52,20 @@ router.post('/', async function (req, res) {
   const taskType = new TaskType(req.body)
   taskType.category = category
 
+  if (taskType.user != req.user._id) {
+    return res
+      .status(401)
+      .send(
+        'Trying to save taskType for different user than the one logged in.'
+      )
+  }
+
   await taskType.save()
 
   res.send(taskType)
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
   const { error } = validate(req.body)
   if (error) return res.status(400).send(error.details[0].message)
 
@@ -83,7 +94,7 @@ router.put('/:id', async (req, res) => {
   }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   const task = await TaskType.findByIdAndRemove(req.params.id)
 
   if (!task) {
