@@ -37,6 +37,9 @@ router.post('/', auth, async function (req, res) {
 
   const activityType = new ActivityType(req.body)
   activityType.tasktype = taskType
+  //pushing it to the parent so we can use the populate() on parent object
+  taskType.activityTypes.push(activityType)
+  taskType.save()
 
   await activityType.save()
 
