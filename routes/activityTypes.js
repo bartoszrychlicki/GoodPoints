@@ -35,7 +35,12 @@ router.post('/', auth, async function (req, res) {
     return res.status(400).send('TaskType with given ID not found')
   }
 
-  res.send(taskType)
+  const activityType = new ActivityType(req.body)
+  activityType.tasktype = taskType
+
+  await activityType.save()
+
+  res.send(activityType)
 })
 
 router.put('/:id', auth, async (req, res) => {
