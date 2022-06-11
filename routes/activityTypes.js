@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 
 const { TaskType } = require('../models/taskType')
 const { ActivityType, validate } = require('../models/activityType')
+const winston = require('winston')
 
 router.get('/', auth, async (req, res) => {
   const object = await ActivityType.find()
@@ -28,17 +29,13 @@ router.post('/', auth, async function (req, res) {
   const { error } = validate(req.body)
   if (error) return res.status(400).send(error.details[0].message)
 
-  const taskType = await TaskType.findById(req.body.tasktype).exec()
+  const taskType = await TaskType.findById(req.body.taskType).exec()
+
   if (!taskType) {
     return res.status(400).send('TaskType with given ID not found')
   }
 
-  const activityType = new ActivityType(req.body)
-  activityType.tasktype = taskType
-
-  await activityType.save()
-
-  res.send(activityType)
+  res.send(taskType)
 })
 
 router.put('/:id', auth, async (req, res) => {

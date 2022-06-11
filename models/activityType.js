@@ -19,7 +19,7 @@ const object = new mongoose.model('activityType', schema)
 function validate(object) {
   const schema = Joi.object({
     reward: Joi.number().min(0).max(100).required(),
-    tasktype: Joi.objectId().required(),
+    taskType: Joi.objectId().required(),
     description: Joi.string().required(),
   })
   return schema.validate(object)
