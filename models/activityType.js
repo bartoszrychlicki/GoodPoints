@@ -2,7 +2,7 @@ const Joi = require('joi')
 Joi.objectId = require('joi-objectid')(Joi)
 
 const mongoose = require('mongoose')
-const { TaskType } = require('./taskType')
+//const { TaskType } = require('./taskType')
 
 const schema = {
   reward: { type: Number, required: true, min: 0, max: 100 },

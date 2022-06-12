@@ -28,6 +28,8 @@ require('./startup/prod')(app)
 require('./startup/db')()
 require('./startup/routes')(app)
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   winston.info('Listening on port:', port)
 })
+
+module.exports = server

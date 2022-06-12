@@ -1,0 +1,4 @@
+{
+  "db": "mongodb://localhost/goodpoints_test",
+  "jwtPrivateKey": "12345"
+}

@@ -36,6 +36,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mongoose": "^6.1.5",
+    "supertest": "^6.2.3",
     "winston": "^2.4.5"
   }
 }

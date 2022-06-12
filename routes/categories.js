@@ -37,7 +37,7 @@ router.post('/', auth, async function (req, res) {
     return res
       .status(401)
       .send(
-        'Access denied. Trying to add category for different user then logged'
+        'Access denied. Trying to add category for different user then logged in user.'
       )
   }
   await category.save()
